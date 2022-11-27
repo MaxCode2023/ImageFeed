@@ -28,11 +28,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="361" height="187"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0.png" translatesAutoresizingMaskIntoConstraints="NO" id="elg-k9-IWq">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="elg-k9-IWq">
                                                     <rect key="frame" x="0.0" y="0.0" width="361" height="187"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="187" id="Jan-6k-XWX"/>
-                                                    </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="afL-TD-qgq">
                                                     <rect key="frame" x="319" y="0.0" width="42" height="42"/>
@@ -99,7 +96,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="0.png" width="200" height="132"/>
+        <image name="0" width="200" height="132"/>
         <image name="Active.png" width="42" height="42"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
