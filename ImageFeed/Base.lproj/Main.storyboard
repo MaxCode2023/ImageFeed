@@ -29,33 +29,35 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="elg-k9-IWq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="361" height="187"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="361" height="179"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="afL-TD-qgq">
                                                     <rect key="frame" x="319" y="0.0" width="42" height="42"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="4xO-NZ-jJc"/>
                                                         <constraint firstAttribute="height" constant="42" id="P2K-Dk-GU8"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="mj0-jn-TFY"/>
                                                         <constraint firstAttribute="width" constant="42" id="rUX-LN-P5C"/>
                                                     </constraints>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="Active.png"/>
+                                                    <buttonConfiguration key="configuration" style="plain" image="Active"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 февраля 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3x3-N6-u2D">
-                                                    <rect key="frame" x="8" y="163" width="108" height="16"/>
+                                                    <rect key="frame" x="8" y="155" width="108" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="afL-TD-qgq" firstAttribute="top" secondItem="sd2-s6-2MO" secondAttribute="top" id="4XM-HS-zxn"/>
-                                                <constraint firstAttribute="bottom" secondItem="elg-k9-IWq" secondAttribute="bottomMargin" constant="8" id="Bff-7i-4f3"/>
-                                                <constraint firstItem="elg-k9-IWq" firstAttribute="leading" secondItem="sd2-s6-2MO" secondAttribute="leadingMargin" constant="-20" id="MG9-S4-Xyq"/>
-                                                <constraint firstAttribute="trailing" secondItem="afL-TD-qgq" secondAttribute="trailing" id="XIB-Me-Q68"/>
-                                                <constraint firstAttribute="bottom" secondItem="3x3-N6-u2D" secondAttribute="bottom" constant="8" id="eut-FT-c4W"/>
-                                                <constraint firstItem="3x3-N6-u2D" firstAttribute="leading" secondItem="sd2-s6-2MO" secondAttribute="leading" constant="8" id="ovf-F4-6IA"/>
-                                                <constraint firstItem="elg-k9-IWq" firstAttribute="top" secondItem="sd2-s6-2MO" secondAttribute="topMargin" constant="-11" id="u7j-oA-bgd"/>
-                                                <constraint firstAttribute="trailing" secondItem="elg-k9-IWq" secondAttribute="trailingMargin" constant="8" id="uxO-c0-riy"/>
+                                                <constraint firstAttribute="trailing" secondItem="elg-k9-IWq" secondAttribute="trailing" id="0Mv-L8-Ndf"/>
+                                                <constraint firstAttribute="bottom" secondItem="3x3-N6-u2D" secondAttribute="bottom" constant="16" id="Fp3-Lc-ARw"/>
+                                                <constraint firstItem="afL-TD-qgq" firstAttribute="top" secondItem="sd2-s6-2MO" secondAttribute="top" id="LK3-Aw-OMY"/>
+                                                <constraint firstItem="elg-k9-IWq" firstAttribute="leading" secondItem="sd2-s6-2MO" secondAttribute="leading" id="OZi-ZF-CER"/>
+                                                <constraint firstItem="elg-k9-IWq" firstAttribute="top" secondItem="sd2-s6-2MO" secondAttribute="top" id="iz0-W0-Aed"/>
+                                                <constraint firstItem="3x3-N6-u2D" firstAttribute="leading" secondItem="sd2-s6-2MO" secondAttribute="leading" constant="8" id="kxW-iS-hoX"/>
+                                                <constraint firstAttribute="bottom" secondItem="elg-k9-IWq" secondAttribute="bottom" constant="8" id="oJz-PD-WSP"/>
+                                                <constraint firstAttribute="trailing" secondItem="afL-TD-qgq" secondAttribute="trailing" id="rKi-lW-jt0"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Black"/>
@@ -97,7 +99,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="Active.png" width="42" height="42"/>
+        <image name="Active" width="42" height="42"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
