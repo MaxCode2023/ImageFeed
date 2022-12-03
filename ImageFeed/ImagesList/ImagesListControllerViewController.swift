@@ -60,9 +60,9 @@ extension ImagesListViewController: UITableViewDataSource {
         cell.date.text = dateFormatter.string(from: Date())
         
         if indexPath.row % 2 == 0 {
-            cell.favoriteButton.setImage(UIImage(named: "Active"), for: .normal)
+            cell.favoriteButton.setImage(UIImage(named: "liked"), for: .normal)
         } else{
-            cell.favoriteButton.setImage(UIImage(named: "No Active"), for: .normal)
+            cell.favoriteButton.setImage(UIImage(named: "no liked"), for: .normal)
         }
     }
 }
