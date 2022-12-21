@@ -179,65 +179,10 @@
                     <view key="view" contentMode="scaleToFill" id="d3F-8f-jY7">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vfr-Y0-GGO">
-                                <rect key="frame" x="327" y="75" width="48" height="38"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="Exit"/>
-                                <connections>
-                                    <action selector="clickExitButton:" destination="c8w-kN-ltJ" eventType="touchUpInside" id="Juy-jI-sCh"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eee-FT-AWl">
-                                <rect key="frame" x="16" y="137" width="217" height="28"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <color key="textColor" name="YP White"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_novikova" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbH-TO-dji">
-                                <rect key="frame" x="16" y="173" width="154" height="20"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" name="YP Grey"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="stq-UH-dxp">
-                                <rect key="frame" x="16" y="201" width="90" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" name="YP White"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_profile_active" translatesAutoresizingMaskIntoConstraints="NO" id="eZb-ks-P4O">
-                                <rect key="frame" x="16" y="59" width="70" height="70"/>
-                                <color key="tintColor" name="YP Grey"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="hYE-vP-FSH"/>
-                                    <constraint firstAttribute="height" constant="70" id="mhs-s9-xWQ"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="cFJ-qM-xyp"/>
                         <color key="backgroundColor" name="YP Black"/>
-                        <constraints>
-                            <constraint firstItem="stq-UH-dxp" firstAttribute="leading" secondItem="lbH-TO-dji" secondAttribute="leading" id="Ca3-OY-Efv"/>
-                            <constraint firstItem="stq-UH-dxp" firstAttribute="top" secondItem="lbH-TO-dji" secondAttribute="bottom" constant="8" id="EV8-en-Ic1"/>
-                            <constraint firstItem="eZb-ks-P4O" firstAttribute="top" secondItem="cFJ-qM-xyp" secondAttribute="top" id="Rz4-Bm-9cH"/>
-                            <constraint firstItem="lbH-TO-dji" firstAttribute="top" secondItem="eee-FT-AWl" secondAttribute="bottom" constant="8" id="UYX-6o-J5j"/>
-                            <constraint firstItem="vfr-Y0-GGO" firstAttribute="centerY" secondItem="eZb-ks-P4O" secondAttribute="centerY" id="W9d-p9-BzM"/>
-                            <constraint firstItem="eee-FT-AWl" firstAttribute="leading" secondItem="eZb-ks-P4O" secondAttribute="leading" id="Xda-Kr-hGV"/>
-                            <constraint firstItem="lbH-TO-dji" firstAttribute="leading" secondItem="eee-FT-AWl" secondAttribute="leading" id="hfn-gD-E4S"/>
-                            <constraint firstItem="cFJ-qM-xyp" firstAttribute="trailing" secondItem="vfr-Y0-GGO" secondAttribute="trailing" constant="18" id="hz7-bH-CUI"/>
-                            <constraint firstItem="eee-FT-AWl" firstAttribute="top" secondItem="eZb-ks-P4O" secondAttribute="bottom" constant="8" id="m0O-e8-lFa"/>
-                            <constraint firstItem="eZb-ks-P4O" firstAttribute="leading" secondItem="cFJ-qM-xyp" secondAttribute="leading" constant="16" id="xJg-BB-BX6"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="JXJ-dJ-JDF"/>
-                    <connections>
-                        <outlet property="exitButton" destination="vfr-Y0-GGO" id="lL5-qc-YUA"/>
-                        <outlet property="imageProfile" destination="eZb-ks-P4O" id="IDH-4o-AbQ"/>
-                        <outlet property="name" destination="eee-FT-AWl" id="fkR-Su-PFz"/>
-                        <outlet property="nickName" destination="lbH-TO-dji" id="1JW-yu-MoZ"/>
-                        <outlet property="status" destination="stq-UH-dxp" id="uBb-ef-YTP"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OIj-oC-02J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -267,15 +212,11 @@
         <image name="0" width="200" height="132"/>
         <image name="Active" width="42" height="42"/>
         <image name="Backward" width="24" height="24"/>
-        <image name="Exit" width="24" height="24"/>
         <image name="Sharing" width="50" height="50"/>
         <image name="tab_editorial_active" width="31" height="30"/>
         <image name="tab_profile_active" width="31" height="30"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP Grey">
-            <color red="0.68199998140335083" green="0.68599998950958252" blue="0.70599997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
