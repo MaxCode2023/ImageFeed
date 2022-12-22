@@ -11,8 +11,8 @@ class SingleImageViewController: UIViewController {
 
     
     @IBOutlet weak private var buttonBack: UIButton!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak private var scrollView: UIScrollView!
 
     @IBOutlet weak var sharingButton: UIButton!
     
@@ -34,7 +34,7 @@ class SingleImageViewController: UIViewController {
         scrollView.maximumZoomScale = 1.25
     }
     
-    @IBAction func clickBackButton(_ sender: Any) {
+    @IBAction private func clickBackButton(_ sender: Any) {
         self.dismiss(animated: true)
     }
     
@@ -55,7 +55,7 @@ class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
-    @IBAction func clickSharingButton(_ sender: Any) {
+    @IBAction private func clickSharingButton(_ sender: Any) {
         let share = UIActivityViewController(
             activityItems: [image],
             applicationActivities: nil

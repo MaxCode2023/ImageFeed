@@ -135,7 +135,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="858-Vu-J6J">
-                                <rect key="frame" x="159.66666666666666" y="713" width="74" height="50"/>
+                                <rect key="frame" x="159.66666666666666" y="751" width="74" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="qvA-ak-dAV"/>
                                 </constraints>
@@ -156,7 +156,7 @@
                             <constraint firstItem="pDG-yY-fVy" firstAttribute="top" secondItem="l9o-c8-ayC" secondAttribute="top" id="OZ1-ja-tgu"/>
                             <constraint firstItem="EfJ-wK-djc" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rZs-Bc-szY" secondAttribute="trailing" symbolic="YES" id="QMb-lS-hza"/>
                             <constraint firstItem="EfJ-wK-djc" firstAttribute="trailing" secondItem="pDG-yY-fVy" secondAttribute="trailing" id="RDK-FF-RNE"/>
-                            <constraint firstItem="EfJ-wK-djc" firstAttribute="bottom" secondItem="858-Vu-J6J" secondAttribute="bottom" constant="55" id="dCZ-Q4-jFW"/>
+                            <constraint firstItem="EfJ-wK-djc" firstAttribute="bottom" secondItem="858-Vu-J6J" secondAttribute="bottom" constant="17" id="dCZ-Q4-jFW"/>
                             <constraint firstAttribute="bottom" secondItem="pDG-yY-fVy" secondAttribute="bottom" id="z4O-R0-oJ6"/>
                         </constraints>
                     </view>

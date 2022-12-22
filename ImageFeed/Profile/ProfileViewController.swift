@@ -8,18 +8,12 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
-//    @IBOutlet weak var exitButton: UIButton!
-//    @IBOutlet weak var imageProfile: UIImageView!
-//    @IBOutlet weak var name: UILabel!
-//    @IBOutlet weak var nickName: UILabel!
-//    @IBOutlet weak var status: UILabel!
     
-    let image = UIImageView()
-    let labelName = UILabel()
-    let labelNickname = UILabel()
-    let labelStatus = UILabel()
-    let button = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: ProfileViewController.self, action: nil)
+    private let image = UIImageView()
+    private let labelName = UILabel()
+    private let labelNickname = UILabel()
+    private let labelStatus = UILabel()
+    private let button = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: ProfileViewController.self, action: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +40,6 @@ class ProfileViewController: UIViewController {
     private func setViewConfiguration() {
         image.image = UIImage(named: "Photo")
 
-        
         labelName.text = "Екатерина Новикова"
         labelName.textColor = UIColor(named: "YP White")
         labelName.font = labelName.font.withSize(23)
@@ -60,7 +53,6 @@ class ProfileViewController: UIViewController {
         labelStatus.font = labelStatus.font.withSize(13)
         
         button.tintColor = UIColor(named: "YP Red")
-        
     }
     
     private func activateConstraints() {
