@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22227A9A295F1B6B0014DF14 /* WebViewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22227A99295F1B6B0014DF14 /* WebViewViewControllerDelegate.swift */; };
 		223FDB28295DD00800FDCAE1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FDB27295DD00800FDCAE1 /* Constants.swift */; };
 		223FDB2B295DD3AB00FDCAE1 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FDB2A295DD3AB00FDCAE1 /* WebViewViewController.swift */; };
 		223FDB2D295DD49F00FDCAE1 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223FDB2C295DD49F00FDCAE1 /* AuthViewController.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		22227A99295F1B6B0014DF14 /* WebViewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegate.swift; sourceTree = "<group>"; };
 		223FDB27295DD00800FDCAE1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		223FDB2A295DD3AB00FDCAE1 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		223FDB2C295DD49F00FDCAE1 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 			children = (
 				223FDB2A295DD3AB00FDCAE1 /* WebViewViewController.swift */,
 				223FDB2C295DD49F00FDCAE1 /* AuthViewController.swift */,
+				22227A99295F1B6B0014DF14 /* WebViewViewControllerDelegate.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50A8567A2931FDA700E476DF /* ImagesListControllerViewController.swift in Sources */,
+				22227A9A295F1B6B0014DF14 /* WebViewViewControllerDelegate.swift in Sources */,
 				506BFC6E2933D6160058728A /* ImagesListCell.swift in Sources */,
 				50EEBC02293B6E2B00E950B5 /* ProfileViewController.swift in Sources */,
 				50A856762931FDA700E476DF /* AppDelegate.swift in Sources */,
