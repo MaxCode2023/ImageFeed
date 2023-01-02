@@ -6,16 +6,19 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
 
     private let oauth2Service = OAuth2Service.shared
+    private let profileService = ProfileService.shared
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         if let token = oauth2Service.authToken {
+            self.fetchProfile()
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
@@ -55,6 +58,7 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+        UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
@@ -66,9 +70,36 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success:
+                self.fetchProfile()
+            case .failure:
+                
+                let alert = UIAlertController(title: "Что-то пошло не так(",
+                                              message: "Не удалось войти в систему",
+                                              preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "OK",
+                                              style: .default,
+                                              handler: { _ in
+                                              }))
+                self.present(alert, animated: true, completion: nil)
+                
+                UIBlockingProgressHUD.dismiss()
+                break
+            }
+        }
+    }
+    
+    private func fetchProfile() {
+        profileService.fetchProfile { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                ProfileImageService.shared.fetchProfileImageURL(username: self.profileService.profile?.username ?? "") { _ in }
+                UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure:
-                print("failure fetchOAuthToken")
+                UIBlockingProgressHUD.dismiss()
+                print("failure fetchProfile")
                 break
             }
         }

@@ -9,18 +9,49 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    private let image = UIImageView()
-    private let labelName = UILabel()
-    private let labelNickname = UILabel()
-    private let labelStatus = UILabel()
+    private var image = UIImageView()
+    private var labelName = UILabel()
+    private var labelNickname = UILabel()
+    private var labelStatus = UILabel()
     private let button = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: ProfileViewController.self, action: nil)
-    
+    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?      
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let profile = profileService.profile {
+            updateProfileDetails(profile: profile)
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.DidChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
         
         addSubviews()
         setViewConfiguration()
         activateConstraints()
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+    }
+    
+    private func updateProfileDetails(profile: Profile) {
+        self.labelName.text = profile.name
+        self.labelNickname.text = profile.loginName
+        self.labelStatus.text = profile.bio
     }
     
     private func addSubviews() {
@@ -40,15 +71,12 @@ class ProfileViewController: UIViewController {
     private func setViewConfiguration() {
         image.image = UIImage(named: "Photo")
 
-        labelName.text = "Екатерина Новикова"
         labelName.textColor = UIColor(named: "YP White")
         labelName.font = labelName.font.withSize(23)
         
-        labelNickname.text = "@ekaterina_nov"
         labelNickname.textColor = UIColor(named: "YP Grey")
         labelNickname.font = labelNickname.font.withSize(13)
         
-        labelStatus.text = "Hello, world"
         labelStatus.textColor = UIColor(named: "YP White")
         labelStatus.font = labelStatus.font.withSize(13)
         

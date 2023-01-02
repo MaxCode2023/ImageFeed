@@ -1,60 +1,35 @@
 //
-//  OAuth2Service.swift
+//  ProfileService.swift
 //  ImageFeed
 //
-//  Created by macOS on 31.12.2022.
+//  Created by macOS on 02.01.2023.
 //
-
 
 import Foundation
 
-enum NetworkError: Error {
-    case httpStatusCode(Int)
-    case urlRequestError(Error)
-    case urlSessionError
-}
-
-final class OAuth2Service {
-    static let shared = OAuth2Service()
-
+final class ProfileService {
+    static let shared = ProfileService()
+    
+    private(set) var profile: Profile?
+    
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private var lastCode: String?
-
-    private (set) var authToken: String? {
-        get {
-            return OAuth2TokenStorage().token
-        }
-        set {
-            OAuth2TokenStorage().token = newValue
-        }
-    }
-
-    func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        
+    
+    func fetchProfile(completion: @escaping (Result<ProfileResult, Error>) -> Void) {
         assert(Thread.isMainThread)
         
-        if lastCode == code { return }
         task?.cancel()
-        lastCode = code
         
-        let path = "/oauth/token"
-        + "?client_id=\(AccessKey)"
-        + "&&client_secret=\(SecretKey)"
-        + "&&redirect_uri=\(RedirectURI)"
-        + "&&code=\(code)"
-        + "&&grant_type=authorization_code"
+        let request = makeRequest(path: "/me", httpMethod: "GET", baseURL: DefaultBaseURL)
         
-        let request = makeRequest(code: code, path: path, httpMethod: "POST", baseURL: URL(string: "https://unsplash.com")!)
-        
-        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             guard let self = self else { return }
             switch result {
             case .success(let body):
-                let authToken = body.accessToken
-                self.authToken = authToken
-                completion(.success(authToken))
+                self.profile = Profile(result: body)
+                completion(.success(body))
             case .failure(let error):
+                print(error)
                 completion(.failure(error))
             }
         }
@@ -63,44 +38,30 @@ final class OAuth2Service {
 //            guard let self = self else { return }
 //            switch result {
 //            case .success(let body):
-//                let authToken = body.accessToken
-//                self.authToken = authToken
-//                completion(.success(authToken))
+//                self.profile = Profile(result: body)
+//                completion(.success(body))
 //            case .failure(let error):
+//                print(error)
 //                completion(.failure(error))
 //            }
 //        }
-        self.task = task                                    
+        self.task = task
         task.resume()
     }
-
+    
     private func makeRequest(
-        code: String,
         path: String,
         httpMethod: String,
         baseURL: URL = DefaultBaseURL) -> URLRequest {
             
             var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
+            request.setValue("Bearer \(String(describing: OAuth2TokenStorage().token!))", forHTTPHeaderField: "Authorization")
             request.httpMethod = httpMethod
             return request
     }
-
-    private struct OAuthTokenResponseBody: Codable {
-        let accessToken: String
-        let tokenType: String
-        let scope: String
-        let createdAt: Int
-
-        enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case tokenType = "token_type"
-            case scope
-            case createdAt = "created_at"
-        }
-    }
 }
 
-//extension OAuth2Service {
+//extension ProfileService {
 //    private func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
 //        
 //        let task = urlSession.dataTask(with: request, completionHandler: { data, response, error in
@@ -110,7 +71,7 @@ final class OAuth2Service {
 //                        completion(.success(data))
 //                        self.task = nil
 //                        if error != nil {
-//                            self.lastCode = nil
+//                          //  self.lastCode = nil
 //                        }
 //                    }
 //                } else {
@@ -132,13 +93,34 @@ final class OAuth2Service {
 //        return task
 //    }
 //
-//    private func object(for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
+//    private func object(for request: URLRequest, completion: @escaping (Result<ProfileResult, Error>) -> Void) -> URLSessionTask {
 //        let decoder = JSONDecoder()
 //        return data(for: request) { (result: Result<Data, Error>) in
-//            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-//                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
+//            let response = result.flatMap { data -> Result<ProfileResult, Error> in
+//                Result { try decoder.decode(ProfileResult.self, from: data) }
 //            }
 //            completion(response)
 //        }
 //    }
 //}
+
+struct ProfileResult: Codable {
+    let username: String
+    let first_name: String
+    let last_name: String
+    let bio: String?
+}
+
+struct Profile {
+    let username: String
+    let name: String
+    let loginName: String
+    let bio: String?
+    
+    init(result: ProfileResult) {
+        self.username = result.username
+        self.name = "\(result.first_name)" + " \(result.last_name)"
+        self.loginName = "@\(username)"
+        self.bio = result.bio
+    }
+}
