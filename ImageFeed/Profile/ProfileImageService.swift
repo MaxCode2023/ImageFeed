@@ -41,23 +41,6 @@ final class ProfileImageService {
                 completion(.failure(error))
             }
         }
-        
-//        let task = object(for: request) { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let body):
-//                self.avatarURL = body.profile_image.small
-//                completion(.success(body.profile_image.small))
-//                NotificationCenter.default
-//                    .post(
-//                        name: ProfileImageService.DidChangeNotification,
-//                        object: self,
-//                        userInfo: ["URL": self.avatarURL!])
-//            case .failure(let error):
-//                print(error)
-//                completion(.failure(error))
-//            }
-//        }
         self.task = task
         task.resume()
     }
@@ -72,48 +55,6 @@ final class ProfileImageService {
             return request
     }
 }
-
-//extension ProfileImageService {
-//    private func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
-//
-//        let task = urlSession.dataTask(with: request, completionHandler: { data, response, error in
-//            if let data = data, let response = response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
-//                if 200 ..< 300 ~= statusCode {
-//                    DispatchQueue.main.async {
-//                        completion(.success(data))
-//                        self.task = nil
-//                        if error != nil {
-//                        }
-//                    }
-//                } else {
-//                    DispatchQueue.main.async {
-//                        completion(.failure(NetworkError.httpStatusCode(statusCode)))
-//                    }
-//                }
-//            } else if let error = error {
-//                DispatchQueue.main.async {
-//                    completion(.failure(NetworkError.urlRequestError(error)))
-//                }
-//            } else {
-//                DispatchQueue.main.async {
-//                    completion(.failure(NetworkError.urlSessionError))
-//                }
-//            }
-//        })
-//        task.resume()
-//        return task
-//    }
-//
-//    private func object(for request: URLRequest, completion: @escaping (Result<UserResult, Error>) -> Void) -> URLSessionTask {
-//        let decoder = JSONDecoder()
-//        return data(for: request) { (result: Result<Data, Error>) in
-//            let response = result.flatMap { data -> Result<UserResult, Error> in
-//                Result { try decoder.decode(UserResult.self, from: data) }
-//            }
-//            completion(response)
-//        }
-//    }
-//}
 
 struct UserResult: Codable {
     let profile_image: ImageResult

@@ -33,18 +33,6 @@ final class ProfileService {
                 completion(.failure(error))
             }
         }
-        
-//        let task = object(for: request) { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let body):
-//                self.profile = Profile(result: body)
-//                completion(.success(body))
-//            case .failure(let error):
-//                print(error)
-//                completion(.failure(error))
-//            }
-//        }
         self.task = task
         task.resume()
     }
@@ -60,49 +48,6 @@ final class ProfileService {
             return request
     }
 }
-
-//extension ProfileService {
-//    private func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
-//        
-//        let task = urlSession.dataTask(with: request, completionHandler: { data, response, error in
-//            if let data = data, let response = response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
-//                if 200 ..< 300 ~= statusCode {
-//                    DispatchQueue.main.async {
-//                        completion(.success(data))
-//                        self.task = nil
-//                        if error != nil {
-//                          //  self.lastCode = nil
-//                        }
-//                    }
-//                } else {
-//                    DispatchQueue.main.async {
-//                        completion(.failure(NetworkError.httpStatusCode(statusCode)))
-//                    }
-//                }
-//            } else if let error = error {
-//                DispatchQueue.main.async {
-//                    completion(.failure(NetworkError.urlRequestError(error)))
-//                }
-//            } else {
-//                DispatchQueue.main.async {
-//                    completion(.failure(NetworkError.urlSessionError))
-//                }
-//            }
-//        })
-//        task.resume()
-//        return task
-//    }
-//
-//    private func object(for request: URLRequest, completion: @escaping (Result<ProfileResult, Error>) -> Void) -> URLSessionTask {
-//        let decoder = JSONDecoder()
-//        return data(for: request) { (result: Result<Data, Error>) in
-//            let response = result.flatMap { data -> Result<ProfileResult, Error> in
-//                Result { try decoder.decode(ProfileResult.self, from: data) }
-//            }
-//            completion(response)
-//        }
-//    }
-//}
 
 struct ProfileResult: Codable {
     let username: String
