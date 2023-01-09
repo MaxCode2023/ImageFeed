@@ -12,6 +12,7 @@ class ImagesListViewController: UIViewController {
     @IBOutlet private var tableViewImage: UITableView!
     
     private var photosName = [String]()
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -25,11 +26,25 @@ class ImagesListViewController: UIViewController {
         
         photosName = Array(0..<20).map{"\($0)"}
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSegueIdentifier {
+            if let viewController = segue.destination as? SingleImageViewController {
+                if let indexPath = sender as? IndexPath {
+                    let image = UIImage(named: photosName[indexPath.row])
+                    viewController.image = image
+                }
+            }
+            
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
 }
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
 }
 
@@ -60,10 +75,11 @@ extension ImagesListViewController: UITableViewDataSource {
         cell.date.text = dateFormatter.string(from: Date())
         
         if indexPath.row % 2 == 0 {
-            cell.favoriteButton.setImage(UIImage(named: "Active"), for: .normal)
+            cell.favoriteButton.setImage(UIImage(named: "liked"), for: .normal)
         } else{
-            cell.favoriteButton.setImage(UIImage(named: "No Active"), for: .normal)
+            cell.favoriteButton.setImage(UIImage(named: "no liked"), for: .normal)
         }
     }
 }
+
 
