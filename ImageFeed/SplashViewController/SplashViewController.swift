@@ -9,7 +9,8 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
-    private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
+    private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
+    private let tabBarViewControllerIdentifier = "TabBarViewController"
 
     private let oauth2Service = OAuth2Service.shared
     private let profileService = ProfileService.shared
@@ -17,14 +18,11 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        print("CHO")
-        print(oauth2Service.authToken)
-        
         if let token = oauth2Service.authToken {
             self.fetchProfile()
             switchToTabBarController()
         } else {
-            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
 
@@ -40,18 +38,18 @@ final class SplashViewController: UIViewController {
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
+            .instantiateViewController(withIdentifier: tabBarViewControllerIdentifier)
         window.rootViewController = tabBarController
     }
 }
 
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
+        if segue.identifier == showAuthenticationScreenSegueIdentifier {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(ShowAuthenticationScreenSegueIdentifier)") }
+            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)

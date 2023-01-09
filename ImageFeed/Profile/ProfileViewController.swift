@@ -72,8 +72,6 @@ class ProfileViewController: UIViewController {
     }
     
     private func setViewConfiguration() {
-      //  image.image = UIImage(named: "Photo")
-
         labelName.textColor = UIColor(named: "YP White")
         labelName.font = labelName.font.withSize(23)
         
@@ -102,8 +100,4 @@ class ProfileViewController: UIViewController {
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
     }
-
-//    @IBAction func clickExitButton(_ sender: Any) {
-//
-//    }
 }

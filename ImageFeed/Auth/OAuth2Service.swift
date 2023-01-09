@@ -38,14 +38,19 @@ final class OAuth2Service {
         task?.cancel()
         lastCode = code
         
-        let path = "/oauth/token"
-        + "?client_id=\(AccessKey)"
-        + "&&client_secret=\(SecretKey)"
-        + "&&redirect_uri=\(RedirectURI)"
-        + "&&code=\(code)"
-        + "&&grant_type=authorization_code"
+        var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")!
+        urlComponents.queryItems = [
+           URLQueryItem(name: "client_id", value: AccessKey),
+           URLQueryItem(name: "client_secret", value: SecretKey),
+           URLQueryItem(name: "redirect_uri", value: RedirectURI),
+           URLQueryItem(name: "code", value: code),
+           URLQueryItem(name: "grant_type", value: "authorization_code")
+         ]
+        let url = urlComponents.url!
         
-        let request = makeRequest(code: code, path: path, httpMethod: "POST", baseURL: URL(string: "https://unsplash.com")!)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
         
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self = self else { return }
@@ -60,17 +65,6 @@ final class OAuth2Service {
         }
         self.task = task                                    
         task.resume()
-    }
-
-    private func makeRequest(
-        code: String,
-        path: String,
-        httpMethod: String,
-        baseURL: URL = DefaultBaseURL) -> URLRequest {
-            
-            var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
-            request.httpMethod = httpMethod
-            return request
     }
 
     private struct OAuthTokenResponseBody: Codable {
