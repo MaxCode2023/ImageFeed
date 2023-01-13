@@ -11,7 +11,7 @@ final class ProfileImageService {
     
     static let shared = ProfileImageService()
     
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
     private(set) var avatarURL: String?
     
@@ -29,11 +29,11 @@ final class ProfileImageService {
             guard let self = self else { return }
             switch result {
             case .success(let body):
-                self.avatarURL = body.profile_image.small
-                completion(.success(body.profile_image.small))
+                self.avatarURL = body.profileImage.small
+                completion(.success(body.profileImage.small))
                 NotificationCenter.default
                     .post(
-                        name: ProfileImageService.DidChangeNotification,
+                        name: ProfileImageService.didChangeNotification,
                         object: self,
                         userInfo: ["URL": self.avatarURL!])
             case .failure(let error):
@@ -57,7 +57,11 @@ final class ProfileImageService {
 }
 
 struct UserResult: Codable {
-    let profile_image: ImageResult
+    let profileImage: ImageResult
+    
+    enum CodingKeys: String, CodingKey {
+        case profileImage = "profile_image"
+    }
 }
 
 struct ImageResult: Codable {

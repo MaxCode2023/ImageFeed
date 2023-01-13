@@ -27,7 +27,7 @@ class ProfileViewController: UIViewController {
         
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
-                forName: ProfileImageService.DidChangeNotification,
+                forName: ProfileImageService.didChangeNotification,
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
@@ -48,7 +48,7 @@ class ProfileViewController: UIViewController {
         else { return }
 
         let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        image.kf.setImage(with: url, options: [.processor(processor)])
+        image.kf.setImage(with: url, options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
     private func updateProfileDetails(profile: Profile) {

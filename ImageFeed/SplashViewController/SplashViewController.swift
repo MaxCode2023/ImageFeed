@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
@@ -18,9 +17,9 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if let token = oauth2Service.authToken {
+        if oauth2Service.authToken != nil {
             self.fetchProfile()
-            switchToTabBarController()
+            UIBlockingProgressHUD.show()
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -73,19 +72,8 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success:
                 self.fetchProfile()
             case .failure:
-                
-                let alert = UIAlertController(title: "Что-то пошло не так(",
-                                              message: "Не удалось войти в систему",
-                                              preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "OK",
-                                              style: .default,
-                                              handler: { _ in
-                                              }))
-                self.present(alert, animated: true, completion: nil)
-                
+                self.showAlert()
                 UIBlockingProgressHUD.dismiss()
-                break
             }
         }
     }
@@ -100,10 +88,20 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
-                print("failure fetchProfile")
-                break
+                self.showAlert()
             }
         }
     }
+    
+    func showAlert() {
+        let alert = UIAlertController(title: "Что-то пошло не так(",
+                                      message: "Не удалось войти в систему",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK",
+                                      style: .default,
+                                      handler: { _ in
+                                      }))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
-
