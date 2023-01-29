@@ -68,7 +68,9 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        //fetchPhotosNextPage()
+       // if indexPath.row == photosName.count {
+            //fetchPhotosNextPage()
+        //}
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
