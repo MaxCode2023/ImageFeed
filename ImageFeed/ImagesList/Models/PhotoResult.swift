@@ -18,8 +18,23 @@ struct PhotoResult: Codable {
     let likes: Int
     let likedByUser: Bool
     let description: String
-    let user: Array<String>
+    let user: UserResult
     let urls: UrlResult
+    
+    enum CodingKeys: String, CodingKey {
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case blurHash = "blur_hash"
+        case likedByUser = "liked_by_user"
+        case description = "description"
+        case user = "user"
+        case urls = "urls"
+        case id = "id"
+        case width = "width"
+        case height = "height"
+        case color = "color"
+        case likes = "likes"
+    }
     
 }
 
