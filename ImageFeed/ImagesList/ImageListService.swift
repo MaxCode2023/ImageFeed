@@ -24,19 +24,22 @@ class ImageListService {
                 
         let request = makeRequest(path: "/photos?page=\(nextPage)", httpMethod: "GET", baseURL: DefaultBaseURL)
         
-        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<PhotoResult, Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<Array<PhotoResult>, Error>) in
             guard let self = self else { return }
             switch result {
             case .success(let photoResult):
-                self.photos.append(
-                    Photo(
-                        id: photoResult.id,
-                        size: CGSize(width: photoResult.width, height: photoResult.height),
-                        createdAt: Date(),
-                        welcomeDescription: photoResult.description,
-                        thumbImageURL: photoResult.urls.thumb,
-                        largeImageURL: photoResult.urls.full,
-                        isLiked: photoResult.likedByUser))
+                print(photoResult)
+                for i in photoResult.indices {
+                    self.photos.append(
+                        Photo(
+                            id: photoResult[i].id,
+                            size: CGSize(width: photoResult[i].width, height: photoResult[i].height),
+                            createdAt: Date(),
+                            welcomeDescription: photoResult[i].description,
+                            thumbImageURL: photoResult[i].urls.thumb,
+                            largeImageURL: photoResult[i].urls.full,
+                            isLiked: photoResult[i].likedByUser))
+                }
                 NotificationCenter.default
                     .post(
                         name: ImageListService.didChangeNotification,

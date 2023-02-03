@@ -27,7 +27,8 @@ final class SplashViewController: UIViewController {
             self.fetchProfile()
             UIBlockingProgressHUD.show()
         } else {
-            let authViewController = AuthViewController()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
             authViewController.delegate = self
             authViewController.modalPresentationStyle = .fullScreen
             self.present(authViewController, animated: true)

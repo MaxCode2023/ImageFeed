@@ -10,6 +10,7 @@ import XCTest
 final class ImageFeedTests: XCTestCase {
     
     func testFetchPhotos() {
+    func testFetchPhotos() {
         
         let service = ImageListService()
         

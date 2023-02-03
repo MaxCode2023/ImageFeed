@@ -17,7 +17,7 @@ struct PhotoResult: Codable {
     let blurHash: String
     let likes: Int
     let likedByUser: Bool
-    let description: String
+    let description: String?
     let user: UserResult
     let urls: UrlResult
     
@@ -45,3 +45,4 @@ struct UrlResult: Codable {
     let small: String
     let thumb: String
 }
+

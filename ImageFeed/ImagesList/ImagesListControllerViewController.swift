@@ -24,6 +24,8 @@ class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ImageListService().fetchPhotosNextPage()
+        
         photosName = Array(0..<20).map{"\($0)"}
     }
     
