@@ -30,7 +30,6 @@ class ImageListService {
             guard let self = self else { return }
             switch result {
             case .success(let photoResult):
-                print(photoResult)
                 for i in photoResult.indices {
                     self.photos.append(
                         Photo(
@@ -54,7 +53,44 @@ class ImageListService {
         task.resume()
     }
     
-    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<PhotoResult, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        task?.cancel()
+        
+        let request: URLRequest?
+        if isLike {
+            request = makeRequest(path: "/photos/\(photoId)/like", httpMethod: "POST", baseURL: DefaultBaseURL)
+        } else {
+            request = makeRequest(path: "/photos/\(photoId)/like", httpMethod: "DELETE", baseURL: DefaultBaseURL)
+        }
+        
+        let task = urlSession.objectTask(for: request!) { [weak self] (result: Result<PhotoResult, Error>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    self.photos[index] = newPhoto
+                    completion(result)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(result)
+            }
+        }
+        self.task = task
+        task.resume()
+        
+    }
     
     private func makeRequest(
         path: String,
