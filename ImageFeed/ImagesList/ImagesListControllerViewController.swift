@@ -6,14 +6,17 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ImagesListViewController: UIViewController {
 
     @IBOutlet private var tableViewImage: UITableView!
     
-    private var photosName = [String]()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    
+    private let imagesListService = ImageListService()
+    private var photos: [Photo] = []
+    private var imageListServiceObserver: NSObjectProtocol?
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -23,18 +26,26 @@ class ImagesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagesListService.fetchPhotosNextPage()
+        photos = imagesListService.photos
         
-        ImageListService().fetchPhotosNextPage()
-        
-        photosName = Array(0..<20).map{"\($0)"}
+        imageListServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ImageListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateTableViewAnimated()
+            }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
             if let viewController = segue.destination as? SingleImageViewController {
                 if let indexPath = sender as? IndexPath {
-                    let image = UIImage(named: photosName[indexPath.row])
-                    viewController.image = image
+                    let urlImage = URL(string: photos[indexPath.row].largeImageURL)
+                    viewController.urlImage = urlImage
                 }
             }
             
@@ -52,9 +63,22 @@ extension ImagesListViewController: UITableViewDelegate {
 
 extension ImagesListViewController: UITableViewDataSource {
     
+    func updateTableViewAnimated() {
+        let oldCount = photos.count
+        let newCount = imagesListService.photos.count
+        photos = imagesListService.photos
+        if oldCount != newCount {
+            tableViewImage.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableViewImage.insertRows(at: indexPaths, with: .automatic)
+            } completion: { _ in }
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photosName.count
+        return photos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,23 +94,19 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-       // if indexPath.row == photosName.count {
-            //fetchPhotosNextPage()
-        //}
+        if indexPath.row == photos.count-1 {
+            imagesListService.fetchPhotosNextPage()
+        }
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
+        cell.imageCell.kf.indicatorType = .activity
+        let urlImage = URL(string: photos[indexPath.row].thumbImageURL)
+        cell.imageCell.kf.setImage(with: urlImage, options: [.cacheSerializer(FormatIndicatedCacheSerializer.png)]) { _ in
+            self.tableViewImage.reloadRows(at: [indexPath], with: .automatic)
         }
-        cell.imageCell.image = image
-        cell.date.text = dateFormatter.string(from: Date())
         
-        if indexPath.row % 2 == 0 {
-            cell.favoriteButton.setImage(UIImage(named: "liked"), for: .normal)
-        } else{
-            cell.favoriteButton.setImage(UIImage(named: "no liked"), for: .normal)
-        }
+        cell.date.text = dateFormatter.string(from: photos[indexPath.row].createdAt ?? Date())
     }
 }
 

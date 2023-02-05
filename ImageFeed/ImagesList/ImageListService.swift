@@ -18,6 +18,8 @@ class ImageListService {
     
     func fetchPhotosNextPage() {
         let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
+        print("NEXTPAGE")
+        print(nextPage)
         assert(Thread.isMainThread)
         
         task?.cancel()
@@ -51,6 +53,8 @@ class ImageListService {
         self.task = task
         task.resume()
     }
+    
+    
     
     private func makeRequest(
         path: String,

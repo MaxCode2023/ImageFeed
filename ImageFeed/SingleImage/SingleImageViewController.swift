@@ -11,27 +11,34 @@ class SingleImageViewController: UIViewController {
 
     
     @IBOutlet weak private var buttonBack: UIButton!
-    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak private var scrollView: UIScrollView!
 
     @IBOutlet weak var sharingButton: UIButton!
     
-    var image: UIImage! {
-        didSet {
-            guard isViewLoaded else { return } // 1
-            imageView.image = image // 2
-            rescaleAndCenterImageInScrollView(image: image)
-        }
-    }
+    var urlImage: URL?
+    
+//    var image: UIImage! {
+//        didSet {
+//            guard isViewLoaded else { return } // 1
+//            imageView.image = image // 2
+//            rescaleAndCenterImageInScrollView(image: image)
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonBack.setTitle("", for: .normal)
         sharingButton.setTitle("", for: .normal)
-        imageView.image = image
-        rescaleAndCenterImageInScrollView(image: image)
+        
+        guard let urlImage = urlImage else { return }
+        imageView.kf.setImage(with: urlImage)
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+       // rescaleAndCenterImageInScrollView(image: imageView.image!)
     }
     
     @IBAction private func clickBackButton(_ sender: Any) {
@@ -57,7 +64,7 @@ class SingleImageViewController: UIViewController {
     
     @IBAction private func clickSharingButton(_ sender: Any) {
         let share = UIActivityViewController(
-            activityItems: [image],
+            activityItems: [imageView.image],
             applicationActivities: nil
         )
         present(share, animated: true, completion: nil)
