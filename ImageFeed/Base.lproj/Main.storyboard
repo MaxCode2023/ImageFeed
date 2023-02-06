@@ -42,7 +42,10 @@
                                                         <constraint firstAttribute="width" constant="42" id="rUX-LN-P5C"/>
                                                     </constraints>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="liked"/>
+                                                    <buttonConfiguration key="configuration" style="plain" image="no liked"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked:" destination="Gao-lr-0XJ" eventType="touchUpInside" id="73e-Rz-vnM"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 февраля 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3x3-N6-u2D">
                                                     <rect key="frame" x="8" y="155" width="108" height="16"/>
@@ -314,8 +317,8 @@
         <image name="Backward" width="24" height="24"/>
         <image name="Sharing" width="50" height="50"/>
         <image name="image plug" width="83" height="75"/>
-        <image name="liked" width="42" height="42"/>
         <image name="nav_back_button" width="24" height="24"/>
+        <image name="no liked" width="42" height="42"/>
         <image name="tab_editorial_active" width="31" height="30"/>
         <image name="unsplash icon" width="60" height="60"/>
         <namedColor name="YP Black">

@@ -7,6 +7,7 @@
 
 
 import Foundation
+import WebKit
 
 enum NetworkError: Error {
     case httpStatusCode(Int)
@@ -20,7 +21,7 @@ final class OAuth2Service {
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private var lastCode: String?
-
+    
     private (set) var authToken: String? {
         get {
             return OAuth2TokenStorage().token
@@ -29,6 +30,22 @@ final class OAuth2Service {
             OAuth2TokenStorage().token = newValue
         }
     }
+    
+    func logout() {
+        authToken?.removeAll()
+        OAuth2Service.clean()
+        
+        //сделать переход к стартовому экрану
+    }
+    
+    static func clean() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+           records.forEach { record in
+              WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+           }
+        }
+     }
 
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         

@@ -32,7 +32,8 @@ class SingleImageViewController: UIViewController {
         sharingButton.setTitle("", for: .normal)
         
         guard let urlImage = urlImage else { return }
-        imageView.kf.setImage(with: urlImage)
+        setFullImage(url: urlImage)
+        
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
     }
@@ -43,6 +44,14 @@ class SingleImageViewController: UIViewController {
     
     @IBAction private func clickBackButton(_ sender: Any) {
         self.dismiss(animated: true)
+    }
+    
+    @IBAction private func clickSharingButton(_ sender: Any) {
+        let share = UIActivityViewController(
+            activityItems: [imageView.image],
+            applicationActivities: nil
+        )
+        present(share, animated: true, completion: nil)
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -62,12 +71,38 @@ class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
-    @IBAction private func clickSharingButton(_ sender: Any) {
-        let share = UIActivityViewController(
-            activityItems: [imageView.image],
-            applicationActivities: nil
-        )
-        present(share, animated: true, completion: nil)
+    private func setFullImage(url: URL) {
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: url) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError()
+            }
+        }
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(title: "Что-то пошло не так",
+                                      message: "Попробовать ещё раз?",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Не надо",
+                                      style: .default,
+                                      handler: { _ in
+                                      }))
+        
+        alert.addAction(UIAlertAction(title: "Повторить ",
+                                      style: .default,
+                                      handler: { _ in
+            guard let urlImage = self.urlImage else { return }
+            self.setFullImage(url: urlImage)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

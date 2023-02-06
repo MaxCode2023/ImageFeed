@@ -12,3 +12,5 @@ let SecretKey = "b99lHBvBrUgVpF70lQFrvKJ3hyyCCQMA0tk28nVoTB4"
 let RedirectURI = "urn:ietf:wg:oauth:2.0:oob"
 let AccessScope = "public+read_user+write_likes"
 let DefaultBaseURL = URL(string: "https://api.unsplash.com")!
+
+public struct VoidCodable: Codable {}

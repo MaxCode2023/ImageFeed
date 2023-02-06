@@ -44,7 +44,7 @@ class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             if let viewController = segue.destination as? SingleImageViewController {
                 if let indexPath = sender as? IndexPath {
-                    let urlImage = URL(string: photos[indexPath.row].largeImageURL)
+                    let urlImage = URL(string: photos[indexPath.row].fullImageURL)
                     viewController.urlImage = urlImage
                 }
             }
@@ -88,6 +88,7 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imagesListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        imagesListCell.delegate = self
         configCell(for: imagesListCell, with: indexPath)
         
         return imagesListCell
@@ -110,4 +111,35 @@ extension ImagesListViewController: UITableViewDataSource {
     }
 }
 
-
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableViewImage.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+                
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+            switch result {
+            case .success:
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(isLiked: !photo.isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print(error)
+                self.showAlert()
+            }
+        }
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(title: "Упс, что-то пошло не так(",
+                                      message: "Не удалось лайкнуть картинку",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK",
+                                      style: .default,
+                                      handler: { _ in
+                                      }))
+        self.present(alert, animated: true, completion: nil)
+    }
+}

@@ -38,7 +38,7 @@ class ImageListService {
                             createdAt: Date(),
                             welcomeDescription: photoResult[i].description,
                             thumbImageURL: photoResult[i].urls.thumb,
-                            largeImageURL: photoResult[i].urls.full,
+                            fullImageURL: photoResult[i].urls.full,
                             isLiked: photoResult[i].likedByUser))
                 }
                 NotificationCenter.default
@@ -53,18 +53,18 @@ class ImageListService {
         task.resume()
     }
     
-    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<PhotoResult, Error>) -> Void) {
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<VoidCodable, Error>) -> Void) {
         assert(Thread.isMainThread)
         task?.cancel()
         
         let request: URLRequest?
-        if isLike {
+        if isLike == true {
             request = makeRequest(path: "/photos/\(photoId)/like", httpMethod: "POST", baseURL: DefaultBaseURL)
         } else {
             request = makeRequest(path: "/photos/\(photoId)/like", httpMethod: "DELETE", baseURL: DefaultBaseURL)
         }
         
-        let task = urlSession.objectTask(for: request!) { [weak self] (result: Result<PhotoResult, Error>) in
+        let task = urlSession.objectTask(for: request!) { [weak self] (result: Result<VoidCodable, Error>) in
             guard let self = self else { return }
             switch result {
             case .success(_):
@@ -76,7 +76,7 @@ class ImageListService {
                         createdAt: photo.createdAt,
                         welcomeDescription: photo.welcomeDescription,
                         thumbImageURL: photo.thumbImageURL,
-                        largeImageURL: photo.largeImageURL,
+                        fullImageURL: photo.fullImageURL,
                         isLiked: !photo.isLiked
                     )
                     self.photos[index] = newPhoto
