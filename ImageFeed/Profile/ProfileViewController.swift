@@ -18,7 +18,6 @@ class ProfileViewController: UIViewController {
     private let profileService = ProfileService.shared
     private var profileImageServiceObserver: NSObjectProtocol?      
 
-    private var animationLayers = Array<CALayer>()
     private let gradientImage = CAGradientLayer()
     private let gradientLabelName = CAGradientLayer()
     private let gradientLabelNickname = CAGradientLayer()
@@ -29,17 +28,13 @@ class ProfileViewController: UIViewController {
         
         image.layer.addSublayer(gradientImage)
         labelName.layer.addSublayer(gradientLabelName)
-        labelNickname.layer.addSublayer(gradientLabelName)
-        labelStatus.layer.addSublayer(gradientLabelName)
+        labelNickname.layer.addSublayer(gradientLabelNickname)
+        labelStatus.layer.addSublayer(gradientLabelStatus)
         
         animateSkeleton(gradientName: gradientImage, size: CGSize(width: 70, height: 70), cornerRadius: 35, keyAnimation: "imageLocationChange")
-        animateSkeleton(gradientName: gradientLabelName, size: CGSize(width: labelName.frame.width, height: labelName.frame.height), cornerRadius: 5, keyAnimation: "labelNameLocationChange")
-        animateSkeleton(gradientName: gradientLabelNickname, size: CGSize(width: labelNickname.frame.width, height: labelNickname.frame.height), cornerRadius: 5, keyAnimation: "labelNicknameLocationChange")
-        animateSkeleton(gradientName: gradientLabelStatus, size: CGSize(width: labelStatus.frame.width, height: labelStatus.frame.height), cornerRadius: 5, keyAnimation: "labelStatusLocationChange")
-        
-        if let profile = profileService.profile {
-            updateProfileDetails(profile: profile)
-        }
+        animateSkeleton(gradientName: gradientLabelName, size: CGSize(width: 223, height: 18), cornerRadius: 9, keyAnimation: "labelNameLocationChange")
+        animateSkeleton(gradientName: gradientLabelNickname, size: CGSize(width: 89, height: 18), cornerRadius: 9, keyAnimation: "labelNicknameLocationChange")
+        animateSkeleton(gradientName: gradientLabelStatus, size: CGSize(width: 67, height: 18), cornerRadius: 9, keyAnimation: "labelStatusLocationChange")
         
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
@@ -48,15 +43,19 @@ class ProfileViewController: UIViewController {
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                self.endAnimateSkeleton()
                 self.updateAvatar()
+                if let profile = self.profileService.profile {
+                    self.updateProfileDetails(profile: profile)
+                }
             }
-        self.gradientImage.removeFromSuperlayer()
-        updateAvatar()
-        
         addSubviews()
         setViewConfiguration()
         activateConstraints()
+
+        self.updateAvatar()
+        if let profile = self.profileService.profile {
+            self.updateProfileDetails(profile: profile)
+        }
     }
     
     private func updateAvatar() {
@@ -73,6 +72,7 @@ class ProfileViewController: UIViewController {
         self.labelName.text = profile.name
         self.labelNickname.text = profile.loginName
         self.labelStatus.text = profile.bio
+        endAnimateSkeleton()
     }
     
     private func addSubviews() {
@@ -110,10 +110,16 @@ class ProfileViewController: UIViewController {
             image.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             labelName.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 8),
             labelName.leadingAnchor.constraint(equalTo: image.leadingAnchor),
+            labelName.heightAnchor.constraint(equalToConstant: 25),
+            labelName.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             labelNickname.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 8),
             labelNickname.leadingAnchor.constraint(equalTo: labelName.leadingAnchor),
+            labelNickname.heightAnchor.constraint(equalToConstant: 18),
+            labelNickname.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             labelStatus.topAnchor.constraint(equalTo: labelNickname.bottomAnchor, constant: 8),
             labelStatus.leadingAnchor.constraint(equalTo: labelName.leadingAnchor),
+            labelStatus.heightAnchor.constraint(equalToConstant: 18),
+            labelStatus.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             button.centerYAnchor.constraint(equalTo: image.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
@@ -132,10 +138,7 @@ class ProfileViewController: UIViewController {
         gradientName.endPoint = CGPoint(x: 1, y: 0.5)
         gradientName.cornerRadius = cornerRadius
         gradientName.masksToBounds = true
-        animationLayers.append(gradientName)
-        
-       // image.layer.addSublayer(gradientImage)
-        
+                
         let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
         gradientChangeAnimation.duration = 1.0
         gradientChangeAnimation.repeatCount = .infinity
@@ -149,6 +152,5 @@ class ProfileViewController: UIViewController {
         gradientLabelStatus.removeFromSuperlayer()
         gradientLabelName.removeFromSuperlayer()
         gradientLabelNickname.removeFromSuperlayer()
-        animationLayers.removeAll()
     }
 }

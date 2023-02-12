@@ -101,9 +101,33 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        let gradientImage = CAGradientLayer()
+        cell.imageCell.layer.addSublayer(gradientImage)
+
+        gradientImage.frame = CGRect(origin: .zero, size: CGSize(width: cell.imageCell.frame.width, height: cell.imageCell.frame.height))
+        gradientImage.locations = [0, 0.1, 0.3]
+        gradientImage.colors = [
+            UIColor(red: 0.682, green: 0.686, blue: 0.706, alpha: 1).cgColor,
+            UIColor(red: 0.531, green: 0.533, blue: 0.553, alpha: 1).cgColor,
+            UIColor(red: 0.431, green: 0.433, blue: 0.453, alpha: 1).cgColor
+        ]
+        gradientImage.startPoint = CGPoint(x: 0, y: 0.5)
+        gradientImage.endPoint = CGPoint(x: 1, y: 0.5)
+        gradientImage.cornerRadius = 16
+        gradientImage.masksToBounds = true
+
+        let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
+        gradientChangeAnimation.duration = 1.0
+        gradientChangeAnimation.repeatCount = .infinity
+        gradientChangeAnimation.fromValue = [0, 0.1, 0.3]
+        gradientChangeAnimation.toValue = [0, 0.8, 1]
+        gradientImage.add(gradientChangeAnimation, forKey: "imageSkeleton")
+        
         cell.imageCell.kf.indicatorType = .activity
         let urlImage = URL(string: photos[indexPath.row].thumbImageURL)
+        
         cell.imageCell.kf.setImage(with: urlImage, options: [.cacheSerializer(FormatIndicatedCacheSerializer.png)]) { _ in
+            gradientImage.removeFromSuperlayer()
             self.tableViewImage.reloadRows(at: [indexPath], with: .automatic)
         }
         
