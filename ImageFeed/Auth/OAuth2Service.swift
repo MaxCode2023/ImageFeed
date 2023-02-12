@@ -35,7 +35,9 @@ final class OAuth2Service {
         authToken?.removeAll()
         OAuth2Service.clean()
         
-        //сделать переход к стартовому экрану
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
     }
     
     static func clean() {

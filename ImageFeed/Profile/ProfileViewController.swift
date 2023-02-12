@@ -26,6 +26,8 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        button.addTarget(self, action: #selector(showExitAlert(sender:)), for: .touchUpInside)
+        
         image.layer.addSublayer(gradientImage)
         labelName.layer.addSublayer(gradientLabelName)
         labelNickname.layer.addSublayer(gradientLabelNickname)
@@ -152,5 +154,23 @@ class ProfileViewController: UIViewController {
         gradientLabelStatus.removeFromSuperlayer()
         gradientLabelName.removeFromSuperlayer()
         gradientLabelNickname.removeFromSuperlayer()
+    }
+    
+    @objc func showExitAlert(sender: AnyObject) {
+        let alert = UIAlertController(title: "Пока, пока",
+                                      message: "Уверены, что хотите выйти?",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Да",
+                                      style: .default,
+                                      handler: { _ in
+            OAuth2Service.shared.logout()
+                                      }))
+        alert.addAction(UIAlertAction(title: "Нет",
+                                      style: .default,
+                                      handler: { _ in
+            alert.dismiss(animated: true)
+                                      }))
+        self.present(alert, animated: true, completion: nil)
     }
 }

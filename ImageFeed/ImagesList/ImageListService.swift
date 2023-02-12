@@ -31,11 +31,14 @@ class ImageListService {
             switch result {
             case .success(let photoResult):
                 for i in photoResult.indices {
+                    let createdAt = photoResult[i].createdAt
+                    let dateFormatter = ISO8601DateFormatter()
+                    let date = dateFormatter.date(from: createdAt)
                     self.photos.append(
                         Photo(
                             id: photoResult[i].id,
                             size: CGSize(width: photoResult[i].width, height: photoResult[i].height),
-                            createdAt: Date(),
+                            createdAt: date,
                             welcomeDescription: photoResult[i].description,
                             thumbImageURL: photoResult[i].urls.thumb,
                             fullImageURL: photoResult[i].urls.full,
