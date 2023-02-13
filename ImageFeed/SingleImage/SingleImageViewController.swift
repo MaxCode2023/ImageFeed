@@ -7,14 +7,14 @@
 
 import UIKit
 
-class SingleImageViewController: UIViewController {
+final class SingleImageViewController: UIViewController {
 
     
-    @IBOutlet weak private var buttonBack: UIButton!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak private var scrollView: UIScrollView!
+    @IBOutlet private weak var buttonBack: UIButton!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var scrollView: UIScrollView!
 
-    @IBOutlet weak var sharingButton: UIButton!
+    @IBOutlet private weak var sharingButton: UIButton!
     
     var urlImage: URL?
     

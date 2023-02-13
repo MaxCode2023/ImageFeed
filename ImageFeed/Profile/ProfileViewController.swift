@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
     private var image = UIImageView()
     private var labelName = UILabel()
@@ -164,7 +164,11 @@ class ProfileViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Да",
                                       style: .default,
                                       handler: { _ in
-            OAuth2Service.shared.logout()
+            OAuth2Service.shared.logout {
+                guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+                let splashViewController = SplashViewController()
+                window.rootViewController = splashViewController
+            }
                                       }))
         alert.addAction(UIAlertAction(title: "Нет",
                                       style: .default,

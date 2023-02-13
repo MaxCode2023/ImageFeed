@@ -26,14 +26,7 @@ struct PhotoResult: Codable {
         case updatedAt = "updated_at"
         case blurHash = "blur_hash"
         case likedByUser = "liked_by_user"
-        case description = "description"
-        case user = "user"
-        case urls = "urls"
-        case id = "id"
-        case width = "width"
-        case height = "height"
-        case color = "color"
-        case likes = "likes"
+        case description, user, urls, id, width, height, color, likes
     }
     
 }

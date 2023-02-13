@@ -31,13 +31,10 @@ final class OAuth2Service {
         }
     }
     
-    func logout() {
+    func logout(completion: @escaping () -> Void) {
         authToken?.removeAll()
         OAuth2Service.clean()
-        
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let splashViewController = SplashViewController()
-        window.rootViewController = splashViewController
+        completion()
     }
     
     static func clean() {
@@ -65,7 +62,7 @@ final class OAuth2Service {
            URLQueryItem(name: "code", value: code),
            URLQueryItem(name: "grant_type", value: "authorization_code")
          ]
-        let url = urlComponents.url!
+        guard let url = urlComponents.url else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

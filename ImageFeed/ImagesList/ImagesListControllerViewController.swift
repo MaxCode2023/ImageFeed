@@ -8,9 +8,9 @@
 import UIKit
 import Kingfisher
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
 
-    @IBOutlet private var tableViewImage: UITableView!
+    @IBOutlet private weak var tableViewImage: UITableView!
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imagesListService = ImageListService()

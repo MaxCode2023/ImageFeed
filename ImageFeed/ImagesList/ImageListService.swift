@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ImageListService {
+final class ImageListService {
     private (set) var photos: [Photo] = []
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
@@ -61,7 +61,7 @@ class ImageListService {
         task?.cancel()
         
         let request: URLRequest?
-        if isLike == true {
+        if isLike {
             request = makeRequest(path: "/photos/\(photoId)/like", httpMethod: "POST", baseURL: DefaultBaseURL)
         } else {
             request = makeRequest(path: "/photos/\(photoId)/like", httpMethod: "DELETE", baseURL: DefaultBaseURL)
