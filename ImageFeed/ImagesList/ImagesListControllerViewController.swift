@@ -101,6 +101,9 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        
+        cell.imageCell.image = UIImage(named: "plug")
+        
         let gradientImage = CAGradientLayer()
         cell.imageCell.layer.addSublayer(gradientImage)
 
