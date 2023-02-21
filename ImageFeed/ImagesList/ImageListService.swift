@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ImageListService {
+public final class ImageListService {
     private (set) var photos: [Photo] = []
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
@@ -30,6 +30,7 @@ final class ImageListService {
             guard let self = self else { return }
             switch result {
             case .success(let photoResult):
+                print(photoResult)
                 for i in photoResult.indices {
                     let createdAt = photoResult[i].createdAt
                     let dateFormatter = ISO8601DateFormatter()
@@ -52,6 +53,7 @@ final class ImageListService {
                 print(error.localizedDescription)
             }
         }
+        
         self.task = task
         task.resume()
     }

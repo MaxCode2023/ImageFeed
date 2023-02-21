@@ -8,26 +8,58 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar(url: URL)
+    func updateProfileDetails(profile: Profile)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     
     private var image = UIImageView()
     private var labelName = UILabel()
     private var labelNickname = UILabel()
     private var labelStatus = UILabel()
     private let button = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: ProfileViewController.self, action: nil)
-    private let profileService = ProfileService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?      
 
     private let gradientImage = CAGradientLayer()
     private let gradientLabelName = CAGradientLayer()
     private let gradientLabelNickname = CAGradientLayer()
     private let gradientLabelStatus = CAGradientLayer()
     
+    var presenter: ProfilePresenterProtocol?
+    
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        configure(ProfilePresenter())
         button.addTarget(self, action: #selector(showExitAlert(sender:)), for: .touchUpInside)
         
+        setSkeleton()
+        addSubviews()
+        setViewConfiguration()
+        activateConstraints()
+        
+        presenter?.viewDidLoad()
+    }
+    
+    internal func updateAvatar(url: URL) {
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        image.kf.setImage(with: url, options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
+    }
+    
+    internal func updateProfileDetails(profile: Profile) {
+        self.labelName.text = profile.name
+        self.labelNickname.text = profile.loginName
+        self.labelStatus.text = profile.bio
+        endAnimateSkeleton()
+    }
+    
+    private func setSkeleton() {
         image.layer.addSublayer(gradientImage)
         labelName.layer.addSublayer(gradientLabelName)
         labelNickname.layer.addSublayer(gradientLabelNickname)
@@ -37,44 +69,6 @@ final class ProfileViewController: UIViewController {
         animateSkeleton(gradientName: gradientLabelName, size: CGSize(width: 223, height: 18), cornerRadius: 9, keyAnimation: "labelNameLocationChange")
         animateSkeleton(gradientName: gradientLabelNickname, size: CGSize(width: 89, height: 18), cornerRadius: 9, keyAnimation: "labelNicknameLocationChange")
         animateSkeleton(gradientName: gradientLabelStatus, size: CGSize(width: 67, height: 18), cornerRadius: 9, keyAnimation: "labelStatusLocationChange")
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-                if let profile = self.profileService.profile {
-                    self.updateProfileDetails(profile: profile)
-                }
-            }
-        addSubviews()
-        setViewConfiguration()
-        activateConstraints()
-
-        self.updateAvatar()
-        if let profile = self.profileService.profile {
-            self.updateProfileDetails(profile: profile)
-        }
-    }
-    
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-
-        let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        image.kf.setImage(with: url, options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
-    }
-    
-    private func updateProfileDetails(profile: Profile) {
-        self.labelName.text = profile.name
-        self.labelNickname.text = profile.loginName
-        self.labelStatus.text = profile.bio
-        endAnimateSkeleton()
     }
     
     private func addSubviews() {
