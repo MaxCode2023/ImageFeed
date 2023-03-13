@@ -6,30 +6,56 @@
 //
 
 import XCTest
+@testable import ImageFeed
 
 final class ImageListViewTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    func testViewControllerCallsViewDidLoad() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as! ImagesListViewController
+        let presenter = ImageListPresenterSpy()
+        viewController.configure(presenter)
+        
+        _ = viewController.view
+        
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testAddPhotos() {
+        let viewController = ImagesListViewControllerSpy()
+        let presenter = ImageListPresenter()
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        presenter.viewDidLoad()
+        
+        let imagesListService = presenter.imagesListService
+        XCTAssertNotNil(imagesListService.photos)
     }
+}
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+final class ImageListPresenterSpy: ImageListPresenterProtocol {
+    var viewDidLoadCalled: Bool = false
+    var view: ImagesListViewControllerProtocol?
+    var imagesListService: ImageListService = ImageListService()
+    
+    func viewDidLoad() {
+        viewDidLoadCalled = true
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func fetchPhotosNextPage() {
+        return
     }
+}
 
+final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
+    var presenter: ImageListPresenterProtocol?
+    var updateTableViewAnimatedCalled = false
+    var photosAdded = false
+    
+    var photos: [Photo] = []
+    
+    func updateTableViewAnimated(photos: [Photo]) {
+        updateTableViewAnimatedCalled = true
+    }
 }

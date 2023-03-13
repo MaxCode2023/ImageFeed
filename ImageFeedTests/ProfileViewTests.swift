@@ -6,30 +6,75 @@
 //
 
 import XCTest
+@testable import ImageFeed
 
 final class ProfileViewTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testViewControllerCallsViewDidLoad() {
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenterSpy()
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        _ = viewController.view
+        
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testPresenterCallsUpdates() {
+        let viewController = ProfileViewControllerSpy()
+        let presenter = ProfilePresenter()
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        let expectation = expectation(description: "Test completed")
+        
+        ProfileService.shared.fetchProfile { result in
+            switch result {
+            case .success:
+                ProfileImageService.shared.fetchProfileImageURL(username: ProfileService.shared.profile?.username ?? "") { _ in
+                    presenter.viewDidLoad()
+                    
+                    XCTAssertTrue(viewController.updateAvatarCalled)
+                    XCTAssertTrue(viewController.updateProfileDetailsCalled)
+                    
+                    expectation.fulfill()
+                }
+            case .failure:
+                XCTFail()
+            }
         }
-    }
 
+        waitForExpectations(timeout: 10)
+    }
+}
+
+final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
+    var presenter: ImageFeed.ProfilePresenterProtocol?
+
+    var updateAvatarCalled = false
+    var updateProfileDetailsCalled = false
+    
+    func updateAvatar(url: URL) {
+        updateAvatarCalled = true
+    }
+    
+    func updateProfileDetails(profile: ImageFeed.Profile) {
+        updateProfileDetailsCalled = true
+    }
+}
+
+final class ProfilePresenterSpy: ProfilePresenterProtocol {
+    var viewDidLoadCalled: Bool = false
+    var view: ImageFeed.ProfileViewControllerProtocol?
+    
+    func viewDidLoad() {
+        viewDidLoadCalled = true
+    }
+    
+    func loadProfileImage() {
+        
+    }
+    
+    var profileService: ImageFeed.ProfileService = ImageFeed.ProfileService()
 }

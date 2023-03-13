@@ -38,9 +38,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure(ImageListPresenter())
         presenter?.viewDidLoad()
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -69,9 +67,6 @@ extension ImagesListViewController: UITableViewDataSource {
     func updateTableViewAnimated(photos: [Photo]) {
         let oldCount = self.photos.count
         let newCount = photos.count
-        print("TESTTEST")
-        print(oldCount)
-        print(newCount)
         self.photos = photos
         if oldCount != newCount {
             tableViewImage.performBatchUpdates {

@@ -29,21 +29,13 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     var presenter: ProfilePresenterProtocol?
     
-    func configure(_ presenter: ProfilePresenterProtocol) {
-        self.presenter = presenter
-        self.presenter?.view = self
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure(ProfilePresenter())
         button.addTarget(self, action: #selector(showExitAlert(sender:)), for: .touchUpInside)
-        
         setSkeleton()
         addSubviews()
         setViewConfiguration()
         activateConstraints()
-        
         presenter?.viewDidLoad()
     }
     
