@@ -31,6 +31,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        button.accessibilityIdentifier = "logoutButton"
         button.addTarget(self, action: #selector(showExitAlert(sender:)), for: .touchUpInside)
         setSkeleton()
         addSubviews()

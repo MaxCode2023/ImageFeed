@@ -9,12 +9,11 @@ import XCTest
 
 final class ImageFeedUITests: XCTestCase {
     
-    private let app = XCUIApplication() // переменная приложения
+    private let app = XCUIApplication()
     
     override func setUpWithError() throws {
-        continueAfterFailure = false // настройка выполнения тестов, которая прекратит выполнения тестов, если в тесте что-то пошло не так
-        
-        app.launch() // запускаем приложение перед каждым тестом
+        continueAfterFailure = false
+        app.launch()
     }
     
     func testAuth() throws {
@@ -32,6 +31,7 @@ final class ImageFeedUITests: XCTestCase {
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
+        sleep(2)
         passwordTextField.typeText("iosartsofte")
         webView.swipeUp()
         
@@ -45,10 +45,41 @@ final class ImageFeedUITests: XCTestCase {
     }
     
     func testFeed() throws {
-        // тестируем сценарий ленты
+        let tablesQuery = app.tables
+        
+        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        cell.swipeUp()
+        cell.swipeDown()
+        sleep(2)
+        
+        let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
+        
+        cellToLike.buttons["likeButton"].tap()
+        sleep(2)
+        cellToLike.buttons["likeButton"].tap()
+        
+        sleep(2)
+        
+        cellToLike.tap()
+        
+        sleep(2)
+        
+        let image = app.scrollViews.images.element(boundBy: 0)
+        image.pinch(withScale: 3, velocity: 1)
+        image.pinch(withScale: 0.5, velocity: -1)
+        
+        let navBackButtonWhiteButton = app.buttons["navBackButton"]
+        navBackButtonWhiteButton.tap()
     }
     
     func testProfile() throws {
-        // тестируем сценарий профиля
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        
+        XCTAssertTrue(app.staticTexts["Max Bayankin"].exists)
+        XCTAssertTrue(app.staticTexts["course.ios@artsofte.ru"].exists)
+        
+        app.buttons["logoutButton"].tap()
+        
+        app.alerts["Пока, пока"].scrollViews.otherElements.buttons["Да"].tap()
     }
 }

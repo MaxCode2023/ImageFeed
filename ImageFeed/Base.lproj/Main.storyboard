@@ -35,6 +35,7 @@
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="afL-TD-qgq">
                                                     <rect key="frame" x="319" y="0.0" width="42" height="42"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="likeButton"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="4xO-NZ-jJc"/>
                                                         <constraint firstAttribute="height" constant="42" id="P2K-Dk-GU8"/>
@@ -133,6 +134,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rZs-Bc-szY">
                                 <rect key="frame" x="10" y="55" width="48" height="38"/>
+                                <accessibility key="accessibilityConfiguration" identifier="navBackButton"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="Backward"/>
                                 <connections>
