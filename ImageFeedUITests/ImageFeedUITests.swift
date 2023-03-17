@@ -14,11 +14,11 @@ final class ImageFeedUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app.launch()
+        
     }
     
     func testAuth() throws {
         app.buttons["Authenticate"].tap()
-        
         let webView = app.webViews["UnsplashWebView"]
         XCTAssertTrue(webView.waitForExistence(timeout: 5))
         
@@ -31,7 +31,6 @@ final class ImageFeedUITests: XCTestCase {
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
-        sleep(2)
         passwordTextField.typeText("iosartsofte")
         webView.swipeUp()
         
@@ -49,7 +48,6 @@ final class ImageFeedUITests: XCTestCase {
         
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
         cell.swipeUp()
-        cell.swipeDown()
         sleep(2)
         
         let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
@@ -57,9 +55,7 @@ final class ImageFeedUITests: XCTestCase {
         cellToLike.buttons["likeButton"].tap()
         sleep(2)
         cellToLike.buttons["likeButton"].tap()
-        
-        sleep(2)
-        
+            
         cellToLike.tap()
         
         sleep(2)
@@ -76,7 +72,7 @@ final class ImageFeedUITests: XCTestCase {
         app.tabBars.buttons.element(boundBy: 1).tap()
         
         XCTAssertTrue(app.staticTexts["Max Bayankin"].exists)
-        XCTAssertTrue(app.staticTexts["course.ios@artsofte.ru"].exists)
+        XCTAssertTrue(app.staticTexts["@maxcode2023"].exists)
         
         app.buttons["logoutButton"].tap()
         
